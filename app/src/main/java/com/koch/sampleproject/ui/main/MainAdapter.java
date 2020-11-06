@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.koch.sampleproject.R;
 
+import java.util.List;
+
 public class MainAdapter extends  RecyclerView.Adapter<MainAdapter.MainViewHolder> {
 
-    private String[] dataSet;
+    private List<String> dataSet;
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
@@ -21,7 +23,7 @@ public class MainAdapter extends  RecyclerView.Adapter<MainAdapter.MainViewHolde
         }
     }
 
-    public MainAdapter(String[] dataSet) {
+    public MainAdapter(List<String> dataSet) {
         this.dataSet = dataSet;
     }
 
@@ -30,17 +32,18 @@ public class MainAdapter extends  RecyclerView.Adapter<MainAdapter.MainViewHolde
     public MainAdapter.MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         TextView textView = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.main_text_view_item, parent, false);
+
         MainViewHolder viewHolder = new MainViewHolder(textView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        holder.textView.setText(dataSet[position]);
+        holder.textView.setText(dataSet.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return dataSet.length;
+        return dataSet.size();
     }
 }

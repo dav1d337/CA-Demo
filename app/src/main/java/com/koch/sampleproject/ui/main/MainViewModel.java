@@ -14,19 +14,11 @@ import java.util.List;
 
 public class MainViewModel extends ViewModel implements RetrofitControllerListener {
 
-    private MutableLiveData<String> _text = new MutableLiveData<>("Binded Text from VW");
-    public LiveData<String> text = _text;
+    public MutableLiveData<String> text = new MutableLiveData<>("Binded Text from VW");
 
-    public MutableLiveData<String> changes = new MutableLiveData<>("Hallo");
-  //  public LiveData<String> changes = _changes;
+    public MutableLiveData<List<Change>> changes = new MutableLiveData<>();
 
-    public MainViewModel() {
-
-    }
-
-    public void init() {
-
-    }
+    public void init() { }
 
     public void callTestApi(SimpleIdlingResource idlingResource) {
         GetTestApiResultsUseCase useCase = new GetTestApiResultsUseCase(this);
@@ -35,6 +27,7 @@ public class MainViewModel extends ViewModel implements RetrofitControllerListen
 
     @Override
     public void onChangesReceived(List<Change> changesList) {
-        changes.setValue(changesList.get(0).getSubject());
+        changes.setValue(changesList);
+        text.setValue("New binded Text");  // for ui test exercise
     }
 }
