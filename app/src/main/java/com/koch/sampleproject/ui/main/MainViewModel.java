@@ -3,10 +3,12 @@ package com.koch.sampleproject.ui.main;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.test.espresso.IdlingResource;
 
 import com.koch.sampleproject.domain.GetTestApiResultsUseCase;
 import com.koch.sampleproject.domain.RetrofitControllerListener;
 import com.koch.sampleproject.model.Change;
+import com.koch.sampleproject.network.SimpleIdlingResource;
 
 import java.util.List;
 
@@ -26,9 +28,9 @@ public class MainViewModel extends ViewModel implements RetrofitControllerListen
 
     }
 
-    public void callTestApi() {
+    public void callTestApi(SimpleIdlingResource idlingResource) {
         GetTestApiResultsUseCase useCase = new GetTestApiResultsUseCase(this);
-        useCase.execute();
+        useCase.execute(idlingResource);
     }
 
     @Override

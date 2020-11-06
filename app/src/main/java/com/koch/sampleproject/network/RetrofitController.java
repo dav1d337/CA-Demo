@@ -3,6 +3,11 @@ package com.koch.sampleproject.network;
 
 import android.util.ArraySet;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.test.espresso.IdlingResource;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.koch.sampleproject.domain.RetrofitControllerListener;
@@ -25,7 +30,9 @@ public class RetrofitController implements Callback<List<Change>> {
     // static final String BASE_URL = "http://api.themoviedb.org/3/";
     static final String BASE_URL = "https://git.eclipse.org/r/";
 
-    private Set<RetrofitControllerListener> retrofitControllerListeners = new ArraySet<RetrofitControllerListener>();
+    private Set<RetrofitControllerListener> retrofitControllerListeners = new ArraySet<>();
+
+    private SimpleIdlingResource simpleIdlingResource;
 
     public void registerListener(RetrofitControllerListener retrofitControllerListener) {
         retrofitControllerListeners.add(retrofitControllerListener);
@@ -35,31 +42,37 @@ public class RetrofitController implements Callback<List<Change>> {
         retrofitControllerListeners.forEach(listener -> listener.onChangesReceived(changesList));
     }
 
-    public void start() {
+    public void start(SimpleIdlingResource idlingResource) {
 
         ////
-        Change change = new Change("das ist ein test");
-        List<Change> changes = new ArrayList<Change>();
-        changes.add(change);
-        notifyListener(changes);
+//        Change change = new Change("das ist ein test");
+//        List<Change> changes = new ArrayList<>();
+//        changes.add(change);
+//        notifyListener(changes);
         /////
 
-//        Gson gson = new GsonBuilder()
-//                .setLenient()
-//                .create();
-//
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create(gson))
-//                //.addConverterFactory(JacksonConverterFactory.create())
-//                .build();
-//
-//      //  MovieApi movieApi = retrofit.create(MovieApi.class);
-//        TestApi testAPI = retrofit.create(TestApi.class);
-//
-//      //  Call<MovieResponse> call = movieApi.getTrendingMovies();
-//        Call<List<Change>> call = testAPI.loadChanges("status:open");
-//        call.enqueue(this);
+        simpleIdlingResource = idlingResource;
+
+        if (simpleIdlingResource != null) {
+            simpleIdlingResource.setIdleState(false);
+        }
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                //.addConverterFactory(JacksonConverterFactory.create())
+                .build();
+
+      //  MovieApi movieApi = retrofit.create(MovieApi.class);
+        TestApi testAPI = retrofit.create(TestApi.class);
+
+      //  Call<MovieResponse> call = movieApi.getTrendingMovies();
+        Call<List<Change>> call = testAPI.loadChanges("status:open");
+        call.enqueue(this);
 
     }
 
@@ -69,6 +82,9 @@ public class RetrofitController implements Callback<List<Change>> {
             List<Change> changesList = response.body();
             changesList.forEach(change -> System.out.println("Subject:" + change.getSubject()));
             notifyListener(changesList);
+            if (simpleIdlingResource != null) {
+                simpleIdlingResource.setIdleState(true);
+            }
         } else {
             System.out.println("Error on Response");
             System.out.println(response.errorBody());

@@ -1,9 +1,12 @@
 package com.koch.sampleproject.domain;
 
+import androidx.test.espresso.IdlingResource;
+
 import com.koch.sampleproject.MainApplication;
 import com.koch.sampleproject.di.DaggerMainComponent;
 import com.koch.sampleproject.model.TestApi;
 import com.koch.sampleproject.network.RetrofitController;
+import com.koch.sampleproject.network.SimpleIdlingResource;
 import com.koch.sampleproject.ui.main.MainViewModel;
 
 import javax.inject.Inject;
@@ -28,7 +31,7 @@ public class GetTestApiResultsUseCase {
         retrofitController.registerListener(this.viewModel);
     }
 
-    public void execute() {
-        retrofitController.start();
+    public void execute(SimpleIdlingResource idlingResource) {
+        retrofitController.start(idlingResource);
     }
 }
