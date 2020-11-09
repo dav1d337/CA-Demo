@@ -43,11 +43,12 @@ public class SimpleEspressoTests {
     @Before
     public void init() {
         testRule.launchActivity(new Intent());
-        IdlingRegistry.getInstance().register(testRule.getActivity().getIdlingResource());
+        idlingResource = testRule.getActivity().getIdlingResource();
+        IdlingRegistry.getInstance().register(idlingResource);
     }
 
     @Test
-    public void testIfTextViewChangesAfterButtonClick() {
+    public void testIfTextViewChangesAfterButtonClick() throws InterruptedException {
         // given
         ViewInteraction viewInteractionButton = onView(withId(R.id.button));
 

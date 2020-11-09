@@ -6,27 +6,29 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.IdlingResource;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.koch.sampleproject.MainApplication;
 import com.koch.sampleproject.R;
 import com.koch.sampleproject.databinding.MainActivityBinding;
+import com.koch.sampleproject.di.MainComponent;
 import com.koch.sampleproject.model.Change;
 import com.koch.sampleproject.network.SimpleIdlingResource;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
 
     private MainViewModel viewModel;
-    List<String> testData = new ArrayList<>();
+    private List<String> testData = new ArrayList<>();
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -34,15 +36,24 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     private SimpleIdlingResource idlingResource;
 
+    @Inject
+    ViewModelFactory mViewModelFactory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        MainComponent component = ((MainApplication) getApplication()).getMainComponent();
+        component.inject(this);
+
+        // viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        viewModel = ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel.class);
+        viewModel.init();
+
         MainActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         binding.setViewmodel(viewModel);
         binding.setLifecycleOwner(this);
-        viewModel.init();
+
 
         layoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(layoutManager);

@@ -6,6 +6,6 @@ import java.util.List;
 
 
 // TODO: abstract Listener -> "DataListener" -> adpater package
-public interface RetrofitControllerListener {
+public interface RetrofitListener {
     void onChangesReceived(List<Change> changesList);
 }

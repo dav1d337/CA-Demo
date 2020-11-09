@@ -24,11 +24,4 @@ public class MainModule {
     Context provideApplicationContext() {
         return mainApplication;
     }
-
-    @Provides
-    @Singleton
-    Gson provideGson() {
-        return new Gson();
-    }
-
 }

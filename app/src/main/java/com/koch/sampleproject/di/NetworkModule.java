@@ -14,6 +14,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -43,12 +44,22 @@ public class NetworkModule {
                 .build();
     }
 
-    @Singleton
     @Provides
+    @Singleton
     OkHttpClient provideOkHttpClient(ArrayList<Interceptor> interceptors) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder().followRedirects(false);
         interceptors.forEach(builder::addInterceptor);
         return builder.build();
+    }
+
+    @Provides
+    @Singleton
+    ArrayList<Interceptor> provideInterceptors() {
+        ArrayList<Interceptor> interceptors = new ArrayList<>();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        interceptors.add(loggingInterceptor);
+        return interceptors;
     }
 
     @Provides

@@ -3,19 +3,12 @@ package com.koch.sampleproject.network;
 
 import android.util.ArraySet;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.test.espresso.IdlingResource;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.koch.sampleproject.domain.RetrofitControllerListener;
+import com.koch.sampleproject.domain.RetrofitListener;
 import com.koch.sampleproject.model.Change;
 import com.koch.sampleproject.model.TestApi;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -30,16 +23,16 @@ public class RetrofitController implements Callback<List<Change>> {
     // static final String BASE_URL = "http://api.themoviedb.org/3/";
     static final String BASE_URL = "https://git.eclipse.org/r/";
 
-    private Set<RetrofitControllerListener> retrofitControllerListeners = new ArraySet<>();
+    private Set<RetrofitListener> retrofitListeners = new ArraySet<>();
 
     private SimpleIdlingResource simpleIdlingResource;
 
-    public void registerListener(RetrofitControllerListener retrofitControllerListener) {
-        retrofitControllerListeners.add(retrofitControllerListener);
+    public void registerListener(RetrofitListener retrofitListener) {
+        retrofitListeners.add(retrofitListener);
     }
 
     public void notifyListener(List<Change> changesList) {
-        retrofitControllerListeners.forEach(listener -> listener.onChangesReceived(changesList));
+        retrofitListeners.forEach(listener -> listener.onChangesReceived(changesList));
     }
 
     public void start(SimpleIdlingResource idlingResource) {

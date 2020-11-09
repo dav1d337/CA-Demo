@@ -1,28 +1,36 @@
 package com.koch.sampleproject.ui.main;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.test.espresso.IdlingResource;
 
 import com.koch.sampleproject.domain.GetTestApiResultsUseCase;
-import com.koch.sampleproject.domain.RetrofitControllerListener;
+import com.koch.sampleproject.domain.RetrofitListener;
 import com.koch.sampleproject.model.Change;
 import com.koch.sampleproject.network.SimpleIdlingResource;
 
 import java.util.List;
 
-public class MainViewModel extends ViewModel implements RetrofitControllerListener {
+import javax.inject.Inject;
+
+public class MainViewModel extends ViewModel implements RetrofitListener {
 
     public MutableLiveData<String> text = new MutableLiveData<>("Binded Text from VW");
 
     public MutableLiveData<List<Change>> changes = new MutableLiveData<>();
 
-    public void init() { }
+    private GetTestApiResultsUseCase getTestApiResultsUseCase;
+
+    @Inject
+    public MainViewModel(GetTestApiResultsUseCase getTestApiResultsUseCase) {
+        this.getTestApiResultsUseCase = getTestApiResultsUseCase;
+    }
+
+    public void init() {
+        getTestApiResultsUseCase.registerListener(this);
+    }
 
     public void callTestApi(SimpleIdlingResource idlingResource) {
-        GetTestApiResultsUseCase useCase = new GetTestApiResultsUseCase(this);
-        useCase.execute(idlingResource);
+        getTestApiResultsUseCase.execute(idlingResource);
     }
 
     @Override

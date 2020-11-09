@@ -1,37 +1,70 @@
 package com.koch.sampleproject.domain;
 
-import androidx.test.espresso.IdlingResource;
+import android.util.ArraySet;
 
-import com.koch.sampleproject.MainApplication;
-import com.koch.sampleproject.di.DaggerMainComponent;
+import com.koch.sampleproject.model.Change;
 import com.koch.sampleproject.model.TestApi;
-import com.koch.sampleproject.network.RetrofitController;
 import com.koch.sampleproject.network.SimpleIdlingResource;
-import com.koch.sampleproject.ui.main.MainViewModel;
+
+import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
-import retrofit2.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-public class GetTestApiResultsUseCase {
+public class GetTestApiResultsUseCase implements Callback<List<Change>> {
 
-    private final RetrofitController retrofitController = new RetrofitController(); // TODO: injection
-    private MainViewModel viewModel;
- //   @Inject
- //   Retrofit retrofit;
+    // private final RetrofitController retrofitController = new RetrofitController(); // TODO: injection
+    private SimpleIdlingResource simpleIdlingResource;
+    private Set<RetrofitListener> responseListeners = new ArraySet<>();
 
-    public GetTestApiResultsUseCase(MainViewModel viewModel) {
-       // ((MainApplication) getApplication()).getMainComponent().inject(this);
-        this.viewModel = viewModel; // das ist nicht clean , besser Interface
-        registerViewModelAsListener();
-    }
+    private TestApi testApi;
 
-    public void registerViewModelAsListener() {
-        retrofitController.registerListener(this.viewModel);
+    @Inject
+    public GetTestApiResultsUseCase(TestApi testApi) {
+        this.testApi = testApi;
     }
 
     public void execute(SimpleIdlingResource idlingResource) {
-        retrofitController.start(idlingResource);
+        this.simpleIdlingResource = idlingResource;
+        if (simpleIdlingResource != null) {
+            simpleIdlingResource.setIdleState(false);
+        }
+
+        Call<List<Change>> call = testApi.loadChanges("status:open");
+        call.enqueue(this);
+    }
+
+    public void registerListener(RetrofitListener retrofitListener) {
+        responseListeners.add(retrofitListener);
+    }
+
+    public void notifyListener(List<Change> changesList) {
+        responseListeners.forEach(listener -> listener.onChangesReceived(changesList));
+    }
+
+    @Override
+    public void onResponse(Call<List<Change>> call, Response<List<Change>> response) {
+        if(response.isSuccessful()) {
+            List<Change> changesList = response.body();
+            changesList.forEach(change -> System.out.println("Subject:" + change.getSubject()));
+            notifyListener(changesList);
+            if (simpleIdlingResource != null) {
+                simpleIdlingResource.setIdleState(true);
+            }
+        } else {
+            System.out.println("Error on Response");
+            System.out.println(response.errorBody());
+        }
+    }
+
+    @Override
+    public void onFailure(Call<List<Change>> call, Throwable t) {
+        System.out.println("Failure");
+        t.printStackTrace();
     }
 }
