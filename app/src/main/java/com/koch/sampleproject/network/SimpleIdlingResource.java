@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A very simple implementation of {@link IdlingResource}.
- * <p>
  * Consider using CountingIdlingResource from espresso-contrib package if you use this class from
  * multiple threads or need to keep a count of pending operations.
  */

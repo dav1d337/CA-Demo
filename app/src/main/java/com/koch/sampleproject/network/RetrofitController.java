@@ -5,7 +5,7 @@ import android.util.ArraySet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.koch.sampleproject.domain.RetrofitListener;
+import com.koch.sampleproject.adapter.changes.ChangeDataListener;
 import com.koch.sampleproject.model.Change;
 import com.koch.sampleproject.model.TestApi;
 
@@ -18,21 +18,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
+//todo: can be deleted
 public class RetrofitController implements Callback<List<Change>> {
 
     // static final String BASE_URL = "http://api.themoviedb.org/3/";
     static final String BASE_URL = "https://git.eclipse.org/r/";
 
-    private Set<RetrofitListener> retrofitListeners = new ArraySet<>();
+    private Set<ChangeDataListener> changeDataListeners = new ArraySet<>();
 
     private SimpleIdlingResource simpleIdlingResource;
 
-    public void registerListener(RetrofitListener retrofitListener) {
-        retrofitListeners.add(retrofitListener);
+    public void registerListener(ChangeDataListener changeDataListener) {
+        changeDataListeners.add(changeDataListener);
     }
 
     public void notifyListener(List<Change> changesList) {
-        retrofitListeners.forEach(listener -> listener.onChangesReceived(changesList));
+        changeDataListeners.forEach(listener -> listener.onChangesReceived(changesList));
     }
 
     public void start(SimpleIdlingResource idlingResource) {

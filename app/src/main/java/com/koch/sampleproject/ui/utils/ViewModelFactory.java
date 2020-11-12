@@ -1,18 +1,26 @@
-package com.koch.sampleproject.ui.main;
+package com.koch.sampleproject.ui.utils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.koch.sampleproject.ui.main.MainViewModel;
+import com.koch.sampleproject.ui.movies.MoviesViewModel;
+
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
+
     private final Provider<MainViewModel> mMyViewModelProvider;
+
     @Inject
     public ViewModelFactory(Provider<MainViewModel> myViewModelProvider) {
         mMyViewModelProvider= myViewModelProvider;
     }
+
     @SuppressWarnings("unchecked")
     @NonNull
     @Override

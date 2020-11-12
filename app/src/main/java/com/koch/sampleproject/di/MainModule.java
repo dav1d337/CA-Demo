@@ -19,9 +19,9 @@ public class MainModule {
         this.mainApplication = mainApplication;
     }
 
-    @Provides
-    @Singleton
-    Context provideApplicationContext() {
-        return mainApplication;
-    }
+//    @Provides
+//    @Singleton
+//    Context provideApplicationContext() {
+//        return mainApplication;
+//    }
 }

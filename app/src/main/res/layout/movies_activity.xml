@@ -6,55 +6,44 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.koch.sampleproject.ui.main.MainViewModel" />
+            type="com.koch.sampleproject.ui.movies.MoviesViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@={viewmodel.text}"
-            tools:text="Hallo"
+            android:layout_marginTop="6dp"
+            android:text="Trending Movies"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/refreshButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Refresh"
+            android:onClick="@{() -> viewmodel.callMoviesApi()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{() -> viewmodel.callTestApi()}"
-            app:layout_constraintTop_toBottomOf="@id/textView"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/moviesList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_change"
-            change_binding="@{viewmodel.changes}"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_margin="12dp"
-            android:onClick="navigateToMoviesActivity"/>
-
+            movie_binding="@{viewmodel.movies}"
+            app:layout_constraintTop_toBottomOf="@+id/refreshButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
