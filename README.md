@@ -1,6 +1,6 @@
 # CA-Demo
 
-This is a Android sample project, written in Java, which includes the following principles/technologies:
+Android sample project, written in Java, which includes the following principles/technologies:
 * Clean Code Architecture
 * MVVM and Android Architecture Components like LiveData and DataBinding
 * [Dagger2](https://dagger.dev) for Dependency Injection/ access to inner layer
