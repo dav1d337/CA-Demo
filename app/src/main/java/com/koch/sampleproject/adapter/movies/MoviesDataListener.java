@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface MoviesDataListener {
     void onChangesReceived(MovieResponse movieList);
+    void onError(Error error);
 }

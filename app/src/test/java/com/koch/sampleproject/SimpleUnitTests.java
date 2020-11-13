@@ -36,6 +36,7 @@ public class SimpleUnitTests {
         List<Change> expected = new ArrayList<>();
         expected.add(new Change("test"));
 
+        // TODO: not neccessary?!
         Mockito.doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) {

@@ -19,20 +19,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Trending Movies"
+            android:text="Movies"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
+
 
         <Button
-            android:id="@+id/refreshButton"
+            android:id="@+id/trendingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Refresh"
-            android:onClick="@{() -> viewmodel.callMoviesApi()}"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:onClick="@{() -> viewmodel.callApiForTrendingMovies()}"
+            android:text="Get Trending"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/upcomingButton"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <Button
+            android:id="@+id/upcomingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Upcoming"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{() -> viewmodel.callApiForUpcomingMovies()}"
+            app:layout_constraintStart_toEndOf="@+id/trendingButton"
+            app:layout_constraintTop_toTopOf="@+id/trendingButton" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/moviesList"
@@ -43,7 +55,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             movie_binding="@{viewmodel.movies}"
-            app:layout_constraintTop_toBottomOf="@+id/refreshButton" />
+            app:layout_constraintTop_toBottomOf="@+id/trendingButton" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:onClick="navigateToMainActivity"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

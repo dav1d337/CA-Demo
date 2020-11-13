@@ -1,5 +1,7 @@
 package com.koch.sampleproject.model;
 
+import androidx.annotation.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,7 +11,7 @@ public class Movie {
     private String originalTitle;
 
     @JsonCreator
-    public Movie(@JsonProperty("original_title") String originalTitle, @JsonProperty("original_name") String originalName) {
+    public Movie(@Nullable @JsonProperty("original_title") String originalTitle, @Nullable @JsonProperty("original_name") String originalName) {
         this.originalTitle = originalTitle;
         if (originalTitle == null) {
             this.originalTitle = originalName;

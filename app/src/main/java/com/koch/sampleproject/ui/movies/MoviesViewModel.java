@@ -1,12 +1,12 @@
 package com.koch.sampleproject.ui.movies;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.koch.sampleproject.adapter.changes.GetTestApiResultsUseCase;
 import com.koch.sampleproject.adapter.movies.GetTrendingMoviesUseCase;
 import com.koch.sampleproject.adapter.movies.MoviesDataListener;
-import com.koch.sampleproject.model.Change;
 import com.koch.sampleproject.model.Movie;
 import com.koch.sampleproject.model.MovieResponse;
 
@@ -18,6 +18,7 @@ import javax.inject.Inject;
 public class MoviesViewModel extends ViewModel implements MoviesDataListener {
 
     public MutableLiveData<List<Movie>> movies = new MutableLiveData<>(new ArrayList<>());
+    public MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     private GetTrendingMoviesUseCase getTrendingMoviesUseCase;
 
@@ -30,8 +31,12 @@ public class MoviesViewModel extends ViewModel implements MoviesDataListener {
         getTrendingMoviesUseCase.registerListener(this);
     }
 
-    public void callMoviesApi() {
-        getTrendingMoviesUseCase.execute();
+    public void callApiForTrendingMovies() {
+        getTrendingMoviesUseCase.getTrending();
+    }
+
+    public void callApiForUpcomingMovies() {
+        getTrendingMoviesUseCase.getUpcoming();
     }
 
     @Override
@@ -39,7 +44,17 @@ public class MoviesViewModel extends ViewModel implements MoviesDataListener {
         movies.postValue(movieList.getResults());
     }
 
+    @Override
+    public void onError(Error error) {
+        errorMessage.postValue(error.getMessage());
+    }
+
     public void unregisterListener() {
         getTrendingMoviesUseCase.unregisterListener(this);
+    }
+
+    @Override
+    protected void onCleared() {
+        Log.d("MoviesViewModel", "MoviesVM cleared");
     }
 }

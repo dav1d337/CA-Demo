@@ -1,16 +1,13 @@
 package com.koch.sampleproject.adapter.movies;
 
-import com.koch.sampleproject.adapter.changes.ChangeDataListener;
-import com.koch.sampleproject.model.Movie;
 import com.koch.sampleproject.model.MovieResponse;
 
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.inject.Inject;
 
-public class GetTrendingMoviesUseCase implements TrendingMoviesReceivedCallback {
+public class GetTrendingMoviesUseCase implements MoviesReceivedCallback {
 
     private Set<MoviesDataListener> responseListeners = new CopyOnWriteArraySet<>();
 
@@ -21,8 +18,12 @@ public class GetTrendingMoviesUseCase implements TrendingMoviesReceivedCallback 
         this.serverMovieListProvider = serverMovieListProvider;
     }
 
-    public void execute() {
+    public void getTrending() {
         serverMovieListProvider.fetchTrendingMovies(this);
+    }
+
+    public void getUpcoming() {
+        serverMovieListProvider.fetchUpcomingMovies(this);
     }
 
     public void registerListener(MoviesDataListener dataListener) {
@@ -40,5 +41,15 @@ public class GetTrendingMoviesUseCase implements TrendingMoviesReceivedCallback 
     @Override
     public void trendingMoviesReceived(MovieResponse movies) {
         notifyListener(movies);
+    }
+
+    @Override
+    public void upcomingMoviesReceived(MovieResponse movies) {
+        notifyListener(movies);
+    }
+
+    @Override
+    public void errorReceived(Error e) {
+        responseListeners.forEach(listener -> listener.onError(e));
     }
 }

@@ -16,7 +16,7 @@ import dagger.android.AndroidInjector;
 // vgl. https://github.com/animeshroydev/DaggerPractice
 
 @Singleton
-@Component(modules = {AndroidInjectionModule.class, ActivityBuilderModule.class, NetworkModule.class, ContentModule.class, ViewModelFactoryModule.class, ViewModelsModule.class})
+@Component(modules = {AndroidInjectionModule.class, ActivityBuilderModule.class, NetworkModule.class, ContentModule.class, ViewModelFactoryModule.class, ViewModelsModule.class, RoomModule.class})
 public interface MainComponent extends AndroidInjector<MainApplication> {
 
   void inject(MainApplication application);

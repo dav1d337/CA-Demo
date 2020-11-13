@@ -3,8 +3,8 @@ package com.koch.sampleproject.ui.main;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.koch.sampleproject.adapter.changes.GetTestApiResultsUseCase;
 import com.koch.sampleproject.adapter.changes.ChangeDataListener;
+import com.koch.sampleproject.adapter.changes.GetTestApiResultsUseCase;
 import com.koch.sampleproject.model.Change;
 
 import java.util.ArrayList;

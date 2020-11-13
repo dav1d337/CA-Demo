@@ -1,7 +1,6 @@
 package com.koch.sampleproject.adapter.movies;
 
-import com.koch.sampleproject.adapter.changes.ChangesReceivedCallback;
-
 public interface ServerMovieListProvider {
-    void fetchTrendingMovies(TrendingMoviesReceivedCallback trendingMoviesReceivedCallback);
+    void fetchTrendingMovies(MoviesReceivedCallback moviesReceivedCallback);
+    void fetchUpcomingMovies(MoviesReceivedCallback moviesReceivedCallback);
 }

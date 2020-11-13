@@ -1,18 +1,19 @@
 package com.koch.sampleproject.ui.movies;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.koch.sampleproject.R;
 import com.koch.sampleproject.databinding.MoviesActivityBinding;
-import com.koch.sampleproject.ui.main.MainViewModel;
-import com.koch.sampleproject.ui.utils.ViewModelFactory;
+import com.koch.sampleproject.ui.main.MainActivity;
 import com.koch.sampleproject.ui.utils.ViewModelProviderFactory;
 
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class MoviesActivity extends DaggerAppCompatActivity {
 
         adapter = new MoviesAdapter(new ArrayList<>());
         binding.moviesList.setAdapter(adapter);
+
+        viewModel.errorMessage.observe(this, this::displayErrorToast);
+        Log.d("lifecycle moviesActivity","onCreate invoked");
     }
 
     private void initViewModel() {
@@ -47,19 +51,31 @@ public class MoviesActivity extends DaggerAppCompatActivity {
         viewModel.init();
     }
 
+    public void navigateToMainActivity(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void displayErrorToast(String errorMessage) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i("hallo start", String.valueOf(viewModel.movies.getValue().size()));
         Log.d("lifecycle moviesActivity","onStart invoked");
     }
     @Override
     protected void onResume() {
         super.onResume();
         Log.d("lifecycle moviesActivity","onResume invoked");
+        Log.i("hallo res", String.valueOf(viewModel.movies.getValue().size()));
     }
     @Override
     protected void onPause() {
         super.onPause();
+        Log.i("hallo pause", String.valueOf(viewModel.movies.getValue().size()));
         Log.d("lifecycle moviesActivity","onPause invoked");
     }
     @Override
@@ -70,11 +86,14 @@ public class MoviesActivity extends DaggerAppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.i("hallo restar", String.valueOf(viewModel.movies.getValue().size()));
         Log.d("lifecycle moviesActivity","onRestart invoked");
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d("lifecycle moviesActivity","onDestroy invoked");
+        viewModel.unregisterListener();
     }
+
 }

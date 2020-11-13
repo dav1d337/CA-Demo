@@ -7,21 +7,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.koch.sampleproject.MainApplication;
 import com.koch.sampleproject.R;
 import com.koch.sampleproject.databinding.MainActivityBinding;
-import com.koch.sampleproject.di.MainComponent;
 import com.koch.sampleproject.model.Change;
 import com.koch.sampleproject.network.SimpleIdlingResource;
 import com.koch.sampleproject.ui.movies.MoviesActivity;
-import com.koch.sampleproject.ui.utils.ViewModelFactory;
 import com.koch.sampleproject.ui.utils.ViewModelProviderFactory;
 
 import java.util.ArrayList;
@@ -47,7 +41,6 @@ public class MainActivity extends DaggerAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-      //  inject();
         initViewModel();
 
         MainActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
@@ -80,11 +73,6 @@ public class MainActivity extends DaggerAppCompatActivity {
     private void initViewModel() {
         viewModel = ViewModelProviders.of(this, providerFactory).get(MainViewModel.class);
         viewModel.init();
-    }
-
-    private void inject() {
-     //   MainComponent component = ((MainApplication) getApplication()).getMainComponent();
-    //    component.inject(this);
     }
 
     /**

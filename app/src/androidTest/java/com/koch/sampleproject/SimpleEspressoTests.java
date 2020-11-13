@@ -62,7 +62,7 @@ public class SimpleEspressoTests {
 
         // when
         viewInteractionButton.perform(ViewActions.click());
-        Thread.sleep(2500);
+        Thread.sleep(2500); // TODO: replace sleep with idlingResource or another way to handle waiting for api response
 
         // then
         onView(withId(R.id.textView)).check(ViewAssertions.matches(CoreMatchers.not(ViewMatchers.withText("Binded Text from VW"))));
@@ -76,7 +76,7 @@ public class SimpleEspressoTests {
 
         // when
         viewInteractionButton.perform(ViewActions.click());
-        Thread.sleep(2500);
+        Thread.sleep(2500); // TODO: replace sleep with idlingResource or another way to handle waiting for api response
         
         // then
         Assert.assertTrue(recyclerView.getAdapter().getItemCount() == EXPECTED_RECYCLERVIEW_ITEMS);
